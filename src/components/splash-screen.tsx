@@ -8,10 +8,10 @@ export function SplashScreen() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    // Hide the splash screen after 2.8 seconds to allow the initial logo animation to play
+    // Hide the splash screen after 6 seconds to allow the initial logo animation to play fully
     const timer = setTimeout(() => {
       setShow(false);
-    }, 2800);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
