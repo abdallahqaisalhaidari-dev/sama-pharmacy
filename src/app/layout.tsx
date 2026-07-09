@@ -57,6 +57,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { SplashScreen } from "@/components/splash-screen";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -69,6 +71,7 @@ export default function RootLayout({
       className={`${notoSansArabic.variable} ${elMessiri.variable}`}
     >
       <body className={`${notoSansArabic.className} bg-background antialiased`}>
+        <SplashScreen />
         {children}
       </body>
     </html>
