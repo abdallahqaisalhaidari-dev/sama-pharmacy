@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Search, Menu, X, Pill } from "lucide-react";
 import { useCartStore } from "@/lib/cart-store";
+import AnimatedLogo from "@/components/logo/AnimatedLogo";
 
 const navLinks = [
   { href: "/", label: "الرئيسية" },
@@ -60,12 +61,8 @@ export function Header() {
           <div className="flex items-center justify-between h-16 gap-3 md:gap-6">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md shadow-brand-purple-600/25 bg-brand-cream-dark">
-                <img
-                  src="/logo.png"
-                  alt="صيدلية سما السكر"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md shadow-brand-purple-600/25 bg-brand-cream-dark flex items-center justify-center p-1">
+                <AnimatedLogo className="w-full h-full" />
               </div>
               <span>
                 <span className="block font-heading text-lg md:text-xl font-bold text-brand-purple-900 leading-tight">
@@ -173,12 +170,8 @@ export function Header() {
                 {/* Drawer header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-sm bg-brand-cream-dark">
-                      <img
-                        src="/logo.png"
-                        alt="صيدلية سما السكر"
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-sm bg-brand-cream-dark flex items-center justify-center p-1">
+                      <AnimatedLogo className="w-full h-full" />
                     </div>
                     <span className="font-heading font-bold text-brand-purple-900">
                       صيدلية سما السكر

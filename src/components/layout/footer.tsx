@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import AnimatedLogo from "@/components/logo/AnimatedLogo";
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/settings";
 
 const quickLinks = [
@@ -23,12 +24,8 @@ export function Footer({
           {/* Column 1 — Brand */}
           <div>
             <div className="flex items-center gap-3 mb-5">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md shadow-brand-purple-900/50 bg-white">
-                <img
-                  src="/logo.png"
-                  alt="صيدلية سما السكر"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md shadow-brand-purple-900/50 bg-white flex items-center justify-center p-1">
+                <AnimatedLogo className="w-full h-full" />
               </div>
               <span>
                 <span className="block font-heading text-lg font-bold text-white leading-tight">
