@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans_Arabic, El_Messiri } from "next/font/google";
 import "./globals.css";
 
@@ -55,6 +55,24 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // ── PWA / installable app ──
+  applicationName: "صيدلية سما السكر",
+  appleWebApp: {
+    capable: true,
+    title: "سما السكر",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#7C4F88",
 };
 
 import { SplashScreen } from "@/components/splash-screen";
