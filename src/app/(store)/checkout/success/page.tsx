@@ -43,8 +43,19 @@ function SuccessContent() {
           </p>
         </div>
 
-        <p className="text-sm text-gray-500 mb-8">
+        <p className="text-sm text-gray-500 mb-2">
           سيتواصل معك فريقنا عبر واتساب لتأكيد الطلب وتحديد موعد التوصيل
+        </p>
+
+        <p className="text-sm text-gray-500 mb-8">
+          احتفظ برقم الطلب — يمكنك{" "}
+          <Link
+            href={`/track-order`}
+            className="font-semibold text-brand-purple-600 underline underline-offset-2 hover:text-brand-purple-800"
+          >
+            تتبع حالة طلبك
+          </Link>{" "}
+          به في أي وقت.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -36,6 +36,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import OrderInvoice from "@/components/admin/order-invoice";
 
 const STATUS_OPTIONS = [
   "pending",
@@ -275,91 +276,24 @@ export default function OrdersPage() {
         open={!!detailOrder}
         onOpenChange={() => setDetailOrder(null)}
       >
-        <DialogContent className="max-w-lg rounded-2xl" dir="rtl">
+        <DialogContent
+          className="max-h-[90vh] max-w-2xl overflow-y-auto rounded-2xl"
+          dir="rtl"
+        >
           <DialogHeader>
             <DialogTitle>
-              تفاصيل الطلب {detailOrder?.order_number}
+              فاتورة الطلب {detailOrder?.order_number}
             </DialogTitle>
           </DialogHeader>
 
-          {detailOrder && (
-            <div className="space-y-4 py-2">
-              {/* Customer Info */}
-              <div className="bg-brand-cream rounded-xl p-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">العميل</span>
-                  <span className="font-medium">
-                    {detailOrder.customer_name}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">الهاتف</span>
-                  <span dir="ltr">{detailOrder.customer_phone}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">المحافظة</span>
-                  <span>{detailOrder.governorate_name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">العنوان</span>
-                  <span className="text-left max-w-[200px]">
-                    {detailOrder.customer_address}
-                  </span>
-                </div>
-                {detailOrder.notes && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">ملاحظات</span>
-                    <span>{detailOrder.notes}</span>
-                  </div>
-                )}
+          {detailOrder &&
+            (loadingItems ? (
+              <div className="py-16 text-center">
+                <Loader2 className="mx-auto w-6 h-6 animate-spin text-brand-purple-600" />
               </div>
-
-              {/* Order Items */}
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">المنتجات</h4>
-                {loadingItems ? (
-                  <div className="py-4 text-center">
-                    <Loader2 className="w-5 h-5 animate-spin mx-auto text-brand-purple-600" />
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {orderItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex justify-between items-center bg-white rounded-lg border p-3 text-sm"
-                      >
-                        <div>
-                          <p className="font-medium">{item.product_name}</p>
-                          <p className="text-gray-500">
-                            {item.quantity} × {formatPrice(item.product_price)}
-                          </p>
-                        </div>
-                        <p className="font-semibold">
-                          {formatPrice(item.line_total)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Totals */}
-              <div className="border-t pt-3 space-y-1 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">المجموع الفرعي</span>
-                  <span>{formatPrice(detailOrder.subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">رسوم التوصيل</span>
-                  <span>{formatPrice(detailOrder.delivery_fee)}</span>
-                </div>
-                <div className="flex justify-between text-base font-bold text-brand-purple-600 pt-1">
-                  <span>الإجمالي</span>
-                  <span>{formatPrice(detailOrder.total)}</span>
-                </div>
-              </div>
-            </div>
-          )}
+            ) : (
+              <OrderInvoice order={detailOrder} items={orderItems} />
+            ))}
         </DialogContent>
       </Dialog>
     </div>

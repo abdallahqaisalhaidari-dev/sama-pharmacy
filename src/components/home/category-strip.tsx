@@ -3,40 +3,9 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Pill,
-  Droplets,
-  Citrus,
-  Baby,
-  SprayCan,
-  Stethoscope,
-  Leaf,
-  Scissors,
-  ChevronLeft,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import type { Category } from "@/lib/types";
-
-// Icon mapping per category slug
-const categoryIcons: Record<string, LucideIcon> = {
-  medicines: Pill,
-  skincare: Droplets,
-  vitamins: Citrus,
-  baby: Baby,
-  personal_care: SprayCan,
-  medical_devices: Stethoscope,
-  supplements: Leaf,
-  hair_care: Scissors,
-};
-
-const fallbackIcons: LucideIcon[] = [
-  Pill,
-  Droplets,
-  Leaf,
-  Stethoscope,
-  SprayCan,
-  Citrus,
-];
+import { getCategoryIcon } from "@/lib/category-icons";
 
 interface CategoryStripProps {
   categories: Category[];
@@ -90,9 +59,7 @@ export function CategoryStrip({ categories }: CategoryStripProps) {
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
         >
           {categories.map((category, i) => {
-            const Icon =
-              categoryIcons[category.slug] ||
-              fallbackIcons[i % fallbackIcons.length];
+            const Icon = getCategoryIcon(category.slug, i);
 
             return (
               <motion.div key={category.id} variants={itemVariants}>

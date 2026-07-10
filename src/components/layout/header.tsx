@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/", label: "الرئيسية" },
   { href: "/shop", label: "المتجر" },
   { href: "/categories", label: "الأقسام" },
+  { href: "/track-order", label: "تتبع الطلب" },
   { href: "/about", label: "عن الصيدلية" },
   { href: "/contact", label: "اتصل بنا" },
 ];
