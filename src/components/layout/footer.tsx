@@ -7,6 +7,8 @@ const quickLinks = [
   { href: "/", label: "الرئيسية" },
   { href: "/shop", label: "المتجر" },
   { href: "/categories", label: "الأقسام" },
+  { href: "/track-order", label: "تتبع الطلب" },
+  { href: "/social", label: "تابعونا" },
   { href: "/about", label: "عن الصيدلية" },
   { href: "/contact", label: "اتصل بنا" },
 ];
@@ -157,6 +159,12 @@ export function Footer({
               تابعونا على مواقع التواصل الاجتماعي لمعرفة آخر العروض والمنتجات
               الجديدة
             </p>
+            <Link
+              href="/social"
+              className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-brand-purple-200 transition-colors hover:text-white"
+            >
+              جميع منصاتنا في صفحة واحدة ←
+            </Link>
           </div>
         </div>
       </div>

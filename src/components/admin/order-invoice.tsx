@@ -3,15 +3,16 @@
 /**
  * OrderInvoice — branded, printable invoice for admin order preview.
  * Print uses a dedicated window so the invoice prints clean on
- * A4 or A3 regardless of the dialog/portal it is displayed in.
+ * A4 or A5 regardless of the dialog/portal it is displayed in.
  */
 
 import { useEffect, useState } from "react";
-import { Printer, ClipboardList, Phone, MapPin, AtSign } from "lucide-react";
+import { Printer, ClipboardList, Phone, MapPin } from "lucide-react";
 import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import { formatPrice } from "@/lib/utils";
 import type { Order, OrderItem } from "@/lib/types";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
+import BrandQr from "@/components/qr-code";
 
 interface OrderInvoiceProps {
   order: Order;
@@ -21,7 +22,6 @@ interface OrderInvoiceProps {
 interface ContactInfo {
   phone: string;
   address: string;
-  instagram: string;
 }
 
 const PRINT_AREA_ID = "invoice-print-area";
@@ -30,15 +30,19 @@ export default function OrderInvoice({ order, items }: OrderInvoiceProps) {
   const [contact, setContact] = useState<ContactInfo>({
     phone: DEFAULT_SETTINGS.phone,
     address: DEFAULT_SETTINGS.address,
-    instagram: "",
   });
+  // Origin is browser-only; the QR links to the /social hub page
+  const [socialUrl, setSocialUrl] = useState<string | null>(null);
+  useEffect(() => {
+    setSocialUrl(`${window.location.origin}/social`);
+  }, []);
 
   // Pull live contact details from site settings (public-read table)
   useEffect(() => {
     supabase
       .from("site_settings")
       .select("key, value")
-      .in("key", ["phone", "address", "instagram"])
+      .in("key", ["phone", "address"])
       .then(({ data }) => {
         if (!data) return;
         setContact((c) => {
@@ -46,7 +50,6 @@ export default function OrderInvoice({ order, items }: OrderInvoiceProps) {
           for (const row of data) {
             if (row.key === "phone" && row.value) next.phone = row.value;
             if (row.key === "address" && row.value) next.address = row.value;
-            if (row.key === "instagram") next.instagram = row.value || "";
           }
           return next;
         });
@@ -61,7 +64,7 @@ export default function OrderInvoice({ order, items }: OrderInvoiceProps) {
 
   /** Open a clean window containing only the invoice and print it
    *  on the requested paper size. */
-  const printInvoice = (size: "A4" | "A3") => {
+  const printInvoice = (size: "A4" | "A5") => {
     const el = document.getElementById(PRINT_AREA_ID);
     if (!el) return;
 
@@ -79,12 +82,13 @@ export default function OrderInvoice({ order, items }: OrderInvoiceProps) {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
+<base href="${window.location.origin}/">
 <title>فاتورة ${order.order_number}</title>
 ${headHtml}
 <style>
-  @page { size: ${size}; margin: 12mm; }
+  @page { size: ${size}; margin: ${size === "A5" ? "8mm" : "12mm"}; }
   html, body { background: #ffffff !important; }
-  #${PRINT_AREA_ID} { max-width: ${size === "A3" ? "1000px" : "760px"}; margin: 0 auto; box-shadow: none !important; }
+  #${PRINT_AREA_ID} { max-width: ${size === "A5" ? "500px" : "760px"}; margin: 0 auto; box-shadow: none !important; ${size === "A5" ? "font-size: 12px;" : ""} }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 </style>
 </head>
@@ -111,11 +115,11 @@ ${headHtml}
           طباعة A4
         </button>
         <button
-          onClick={() => printInvoice("A3")}
+          onClick={() => printInvoice("A5")}
           className="inline-flex items-center gap-2 rounded-xl border-2 border-brand-purple-600 px-4 py-2 text-sm font-bold text-brand-purple-700 transition-colors hover:bg-brand-purple-50"
         >
           <Printer className="size-4" />
-          طباعة A3
+          طباعة A5
         </button>
       </div>
 
@@ -272,22 +276,28 @@ ${headHtml}
           <span className="h-px flex-1 bg-gradient-to-r from-brand-purple-300 to-transparent" />
         </div>
 
-        {/* Contact footer */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-full border border-brand-purple-100 px-6 py-3 text-xs text-gray-600">
-          {contact.instagram && (
-            <span className="inline-flex items-center gap-1.5">
-              <AtSign className="size-3.5 text-brand-purple-500" />
-              <span dir="ltr">{contact.instagram.replace(/https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, "")}</span>
+        {/* Contact footer: QR to all platforms + phone/address */}
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-brand-purple-100 px-5 py-4">
+          <div className="space-y-2 text-xs text-gray-600">
+            <span className="flex items-center gap-1.5">
+              <Phone className="size-3.5 text-brand-purple-500" />
+              <span dir="ltr">{contact.phone}</span>
             </span>
+            <span className="flex items-center gap-1.5">
+              <MapPin className="size-3.5 text-brand-purple-500" />
+              {contact.address}
+            </span>
+          </div>
+          {socialUrl && (
+            <div className="flex items-center gap-3">
+              <p className="max-w-[120px] text-left text-[11px] font-bold leading-snug text-brand-purple-700">
+                امسح الكود للوصول إلى جميع منصاتنا
+              </p>
+              <div className="rounded-xl border border-brand-purple-200 p-1">
+                <BrandQr value={socialUrl} size={88} />
+              </div>
+            </div>
           )}
-          <span className="inline-flex items-center gap-1.5">
-            <Phone className="size-3.5 text-brand-purple-500" />
-            <span dir="ltr">{contact.phone}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin className="size-3.5 text-brand-purple-500" />
-            {contact.address}
-          </span>
         </div>
       </div>
     </div>
