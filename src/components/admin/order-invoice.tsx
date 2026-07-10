@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { Printer, ClipboardList, Phone, MapPin, Instagram } from "lucide-react";
+import { Printer, ClipboardList, Phone, MapPin, AtSign } from "lucide-react";
 import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import { formatPrice } from "@/lib/utils";
 import type { Order, OrderItem } from "@/lib/types";
@@ -276,7 +276,7 @@ ${headHtml}
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-full border border-brand-purple-100 px-6 py-3 text-xs text-gray-600">
           {contact.instagram && (
             <span className="inline-flex items-center gap-1.5">
-              <Instagram className="size-3.5 text-brand-purple-500" />
+              <AtSign className="size-3.5 text-brand-purple-500" />
               <span dir="ltr">{contact.instagram.replace(/https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, "")}</span>
             </span>
           )}
